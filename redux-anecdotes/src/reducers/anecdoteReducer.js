@@ -23,6 +23,8 @@ const reducer = (state = initialState, action) => {
   switch (action.type) {
     case 'VOTE':
       return state.map(anec => anec.id === action.payload.id ? {...anec, votes: anec.votes + 1} : anec)
+    case 'NEW_ANECDOTE':
+      return state.concat(action.payload)
   }
 
   return state
@@ -32,6 +34,17 @@ export const updateVotes = (id) => {
   return { 
     type: 'VOTE',
     payload: { id }
+  }
+}
+
+export const createAnecdote = (anecdote) => {
+  return {
+    type: 'NEW_ANECDOTE',
+    payload: { 
+      content: anecdote, 
+      id: getId(), 
+      votes: 0 
+    }
   }
 }
 
