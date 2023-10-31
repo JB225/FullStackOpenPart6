@@ -1,18 +1,20 @@
 import { useSelector, useDispatch } from 'react-redux'
-import { updateVotes } from '../reducers/anecdoteReducer'
 
 const AnecdoteList = () => {
-    const anecdotes = useSelector(state => {
-      if (state.filter) {
-        return state.anecdotes.filter(anec => anec.content.toLowerCase().includes(state.filter.toLowerCase()))
-        // return state.anecdotes
+    const anecdotes = useSelector(({filter, anecdotes}) => {
+      if (filter === '') {
+        return [...anecdotes]
       }
-      return state.anecdotes
+      return [...anecdotes].filter(anec => anec.content.toLowerCase().includes(filter.toLowerCase()))
     })
     const dispatch = useDispatch()
   
     const vote = (id) => {
-      dispatch(updateVotes(id))
+      dispatch({type: 'anecdotes/updateVotes', payload: id})
+      dispatch({
+        type: 'notification/setNotification', 
+        payload: 'You voted for ' + "'" + anecdotes.find(anec => anec.id === id).content + "'"})
+      setTimeout(() => {dispatch({type: 'notification/removeNotification'})}, 2000)
     }
 
     return <div>
