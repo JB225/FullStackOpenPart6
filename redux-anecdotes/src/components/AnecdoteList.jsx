@@ -10,6 +10,7 @@ const AnecdoteList = () => {
     const dispatch = useDispatch()
   
     const vote = (id) => {
+      console.log(anecdotes)
       dispatch({type: 'anecdotes/updateVotes', payload: id})
       dispatch({
         type: 'notification/setNotification', 
